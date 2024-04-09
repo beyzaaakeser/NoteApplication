@@ -108,9 +108,49 @@ const clearItems = () =>{
   setBackToDefault()
 }
 
+const createListItem = (id, value) =>{
+    const element = document.createElement('article'); // Yeni bir article etiketi olusturduk
+    let attr = document.createAttribute('data-id'); // article etiketine data-id attribute'u olusturduk. Yeni bir veri kimligi olusturduk.
+    attr.value = id; // attribute'un degerini id'ye esitledik
+    element.setAttributeNode(attr); // article etiketine data-id attribute'u setledik ekledik.
+    element.classList.add('grocery-item'); // article etiketine class ekledik.
+
+    element.innerHTML = `
+        
+        <p class="title">${value}</p>
+            <div class="btn-container">
+              <button type="button" class="edit-btn">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </button>
+              <button type="button" class="delete-btn">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+        `;
+
+    const deleteBtn = element.querySelector('.delete-btn');
+    deleteBtn.addEventListener('click', deleteItem);
+    const editBtn = element.querySelector('.edit-btn');
+    editBtn.addEventListener('click', editItem);
+    list.appendChild(element); // list'e article etiketini ekledik.
+    displayAlert('Note added successfully', 'success');
+    container.classList.add('show-container');
+  
+}
+
+const setUpItems = () =>{
+  let items = getLocalStorage()
+  if(items.length > 0){
+    items.forEach((item) =>{
+      createListItem(item.id,item.value)
+    })
+  }
+}
+
 // Olay Izleyicileri
 form.addEventListener('submit', addItem);
 clearBtn.addEventListener("click",clearItems)
+window.addEventListener("DOMContentLoaded",setUpItems)
 
 /* ------------------ LOCAL STORAGE --------------------------- */
 
