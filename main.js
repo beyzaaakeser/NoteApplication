@@ -52,47 +52,47 @@ const editItem = (e) => {
 };
 
 const addItem = (e) => {
-  e.preventDefault(); // formun otomaik olarak gonderilmesini engeller
-  const value = grocery.value; // form icerisinde bulunan inputun degerini aldik.
-  const id = new Date().getTime().toString(); // benzersiz bir id olusturduk.
+  e.preventDefault();
+  const value = grocery.value; // form icindeki input degeri alindi
+  const id = new Date().getTime().toString(); // benzersiz bi ID olusturduk
 
-  // Eger input bos degilse ve duzenleme modunda degilse calisacak blog yapisi
-  if (value !== '' && !editFlag) {
-    const element = document.createElement('article'); // Yeni bir article etiketi olusturduk
-    let attr = document.createAttribute('data-id'); // article etiketine data-id attribute'u olusturduk. Yeni bir veri kimligi olusturduk.
-    attr.value = id; // attribute'un degerini id'ye esitledik
-    element.setAttributeNode(attr); // article etiketine data-id attribute'u setledik ekledik.
-    element.classList.add('grocery-item'); // article etiketine class ekledik.
+  if (value !== "" && !editFlag) {
+    const element = document.createElement("article");
+    let attr = document.createAttribute("data-id");
+    attr.value = id;
+    element.setAttributeNode(attr);
+    element.classList.add("grocery-item");
 
     element.innerHTML = `
-        
         <p class="title">${value}</p>
-            <div class="btn-container">
-              <button type="button" class="edit-btn">
+        <div class="btn-container">
+            <button type="button" class="edit-btn">
                 <i class="fa-solid fa-pen-to-square"></i>
-              </button>
-              <button type="button" class="delete-btn">
+            </button>
+            <button type="button" class="delete-btn">
                 <i class="fa-solid fa-trash"></i>
-              </button>
-            </div>
-        `;
+            </button>
+        </div>  
+    `;
 
-    const deleteBtn = element.querySelector('.delete-btn');
-    deleteBtn.addEventListener('click', deleteItem);
-    const editBtn = element.querySelector('.edit-btn');
-    editBtn.addEventListener('click', editItem);
-    list.appendChild(element); // list'e article etiketini ekledik.
-    displayAlert('Note added successfully', 'success');
-    container.classList.add('show-container');
-    //local storage'a ekeleme yapildi
-    addToLocalStorage(id,value)
-    // degerler varsayilana cevrildi
-    setBackToDefault()
-  }else if(value !== "" && editFlag){
-    // degistirecegimiz p etiketinin icerik kismina kullanicinin girdigi degeri gonderdik
+    const deleteBtn = element.querySelector(".delete-btn");
+    deleteBtn.addEventListener("click", deleteItem);
+
+    const editBtn = element.querySelector(".edit-btn");
+    editBtn.addEventListener("click", editItem);
+
+    list.appendChild(element);
+    displayAlert("Created successfully", "success");
+    container.classList.add("show-container");
+
+    // local storage ekleme yap
+    addToLocalStorage(id, value);
+
+    setBackToDefault();
+  } else if (value !== "" && editFlag) {
     editElement.innerText = value;
-    // alert yapisini bastirdik
-    displayAlert('Note edited successfully', 'success');
+    displayAlert("Updated successfully", "success");
+    editLocalStorage(editID, value);
     setBackToDefault();
   }
 };
@@ -136,7 +136,6 @@ const createListItem = (id, value) =>{
     list.appendChild(element); // list'e article etiketini ekledik.
     displayAlert('Note added successfully', 'success');
     container.classList.add('show-container');
-  
 }
 
 const setUpItems = () =>{
@@ -147,11 +146,6 @@ const setUpItems = () =>{
     })
   }
 }
-
-// Olay Izleyicileri
-form.addEventListener('submit', addItem);
-clearBtn.addEventListener("click",clearItems)
-window.addEventListener("DOMContentLoaded",setUpItems)
 
 /* ------------------ LOCAL STORAGE --------------------------- */
 
@@ -183,3 +177,24 @@ const removeFromLocalStorage = (id) => {
   localStorage.setItem("list",JSON.stringify(items))
 
 }
+
+// yerel depoda update islemi 
+  // yerel deopdaki verilerin id'si ile guncellenecek olan verinin idsi birbirine esit ise inputa girilen value degiskenini all llocal storagda bulunan verinin valuesuna aktar
+  const editLocalStorage = (id, value) => {
+    let items = getLocalStorage();
+  
+    items = items.map((item) => {
+      if (item.id === id) {
+        item.value = value;
+      }
+      return item;
+    });
+  
+    localStorage.setItem("list", JSON.stringify(items));
+  };
+
+  
+// Olay Izleyicileri
+form.addEventListener('submit', addItem);
+clearBtn.addEventListener("click",clearItems)
+window.addEventListener("DOMContentLoaded",setUpItems)
