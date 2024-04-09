@@ -82,7 +82,7 @@ const addItem = (e) => {
     editBtn.addEventListener("click", editItem);
 
     list.appendChild(element);
-    displayAlert("Created successfully", "success");
+    displayAlert("Note created successfully", "success");
     container.classList.add("show-container");
 
     // local storage ekleme yap
@@ -103,6 +103,7 @@ const clearItems = () =>{
   if(items.length > 0 ){
     items.forEach((item) => list.removeChild(item));
   }
+  localStorage.clear();
   // container yapisini gizle
   container.classList.remove("show-container")
   displayAlert("List is empty","danger")
@@ -134,7 +135,6 @@ const createListItem = (id, value) =>{
     const editBtn = element.querySelector('.edit-btn');
     editBtn.addEventListener('click', editItem);
     list.appendChild(element); // list'e article etiketini ekledik.
-    displayAlert('Note added successfully', 'success');
     container.classList.add('show-container');
 }
 
