@@ -23,6 +23,13 @@ const displayAlert = (text,action) =>{
     },2000)
 }
 
+// Tikladiginiz article etiketini ekrandan kaldiracak fonksiyon
+const deleteItem = (e)=>{
+  const element = e.currentTarget.parentElement.parentElement;
+  const id = element.dataset.id;
+  list.removeChild(element);
+}
+
 const addItem = (e) =>{
     e.preventDefault(); // formun otomaik olarak gonderilmesini engeller
     const value = grocery.value; // form icerisinde bulunan inputun degerini aldik.
@@ -48,6 +55,10 @@ const addItem = (e) =>{
               </button>
             </div>
         `
+
+        const deleteBtn = element.querySelector(".delete-btn");
+        deleteBtn.addEventListener("click",deleteItem);
+
         list.appendChild(element); // list'e article etiketini ekledik.
         displayAlert("Added Successfully","success")
         
@@ -55,4 +66,7 @@ const addItem = (e) =>{
 
 }
 
+
+
+// Olay Izleyicileri
 form.addEventListener("submit", addItem);
