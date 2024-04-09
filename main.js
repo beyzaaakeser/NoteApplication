@@ -25,9 +25,17 @@ const displayAlert = (text,action) =>{
 
 // Tikladiginiz article etiketini ekrandan kaldiracak fonksiyon
 const deleteItem = (e)=>{
-  const element = e.currentTarget.parentElement.parentElement;
+  const element = e.currentTarget.parentElement.parentElement; // article etiketine eristik.
   const id = element.dataset.id;
-  list.removeChild(element);
+  list.removeChild(element); // list etiketi icerisinden article etiketini kaldirdik.
+  displayAlert("Note deleted successfully","danger")
+}
+
+
+const editItem = (e) => {
+  const element = e.currentTarget.parentElement.parentElement; // article etiketine, parentElement kullanarak eristik.
+  
+  
 }
 
 const addItem = (e) =>{
@@ -58,10 +66,11 @@ const addItem = (e) =>{
 
         const deleteBtn = element.querySelector(".delete-btn");
         deleteBtn.addEventListener("click",deleteItem);
-
+        const editBtn = element.querySelector("edit-btn");
+        editBtn.addEventListener("click",editItem);
         list.appendChild(element); // list'e article etiketini ekledik.
         displayAlert("Added Successfully","success")
-        
+        container.classList.add("show-container")
     }
 
 }
