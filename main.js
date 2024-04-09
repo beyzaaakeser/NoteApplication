@@ -75,8 +75,31 @@ const addItem = (e) => {
     list.appendChild(element); // list'e article etiketini ekledik.
     displayAlert('Note added successfully', 'success');
     container.classList.add('show-container');
+    grocery.value="";
+  }else if(value !== "" && editFlag){
+    // degistirecegimiz p etiketinin icerik kismina kullanicinin girdigi degeri gonderdik
+    editElement.innerText = value;
+    // alert yapisini bastirdik
+    displayAlert('Note edited successfully', 'success');
+    // gonderme butonunu eski haline cevirdik
+    submitBtn.textContent = 'Add';
+    // duzenleme modundan cikardik
+    editFlag = false;
+    grocery.value="";
   }
 };
 
+const clearItems = () =>{
+  const items = document.querySelectorAll(".grocery-item");
+  // listede oge varsaa calsiir
+  if(items.length > 0 ){
+    items.forEach((item) => list.removeChild(item));
+  }
+  // container yapisini gizle
+  container.classList.remove("show-container")
+  displayAlert("List is empty","danger")
+}
+
 // Olay Izleyicileri
 form.addEventListener('submit', addItem);
+clearBtn.addEventListener("click",clearItems)
