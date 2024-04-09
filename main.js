@@ -14,6 +14,13 @@ let editID = ''; // Düzenleme yapılan ögenin benzersiz kimliği
 
 //Fonksiyonlar
 
+const setBackToDefault = () =>{
+  grocery.value = ""
+  editFlag = false;
+  editID = '';
+  submitBtn.textContent = 'Add';
+}
+
 const displayAlert = (text, action) => {
   alert.textContent = text;
   alert.classList.add(`alert-${action}`);
@@ -29,6 +36,7 @@ const deleteItem = (e) => {
   const id = element.dataset.id;
   list.removeChild(element); // list etiketi icerisinden article etiketini kaldirdik.
   displayAlert('Note deleted successfully', 'danger');
+  setBackToDefault();
 };
 
 const editItem = (e) => {
@@ -75,17 +83,16 @@ const addItem = (e) => {
     list.appendChild(element); // list'e article etiketini ekledik.
     displayAlert('Note added successfully', 'success');
     container.classList.add('show-container');
-    grocery.value="";
+    //local storage'a ekeleme yapildi
+    addToLocalStorage(id,value)
+    // degerler varsayilana cevrildi
+    setBackToDefault()
   }else if(value !== "" && editFlag){
     // degistirecegimiz p etiketinin icerik kismina kullanicinin girdigi degeri gonderdik
     editElement.innerText = value;
     // alert yapisini bastirdik
     displayAlert('Note edited successfully', 'success');
-    // gonderme butonunu eski haline cevirdik
-    submitBtn.textContent = 'Add';
-    // duzenleme modundan cikardik
-    editFlag = false;
-    grocery.value="";
+    setBackToDefault();
   }
 };
 
@@ -98,8 +105,26 @@ const clearItems = () =>{
   // container yapisini gizle
   container.classList.remove("show-container")
   displayAlert("List is empty","danger")
+  setBackToDefault()
 }
 
 // Olay Izleyicileri
 form.addEventListener('submit', addItem);
 clearBtn.addEventListener("click",clearItems)
+
+/* ------------------ LOCAL STORAGE --------------------------- */
+
+// yerel depoya oge ekleme islemi
+const addToLocalStorage = (id,value) =>{
+  const grocery = {id,value};
+  let items= getLocalStorage()
+  items.push(grocery)
+  console.log(items)
+  localStorage.setItem("list",JSON.stringify(items))
+};
+
+// yerel depodan oge alma islemi
+const getLocalStorage = () =>{
+  return localStorage.getItem("list") ? JSON.parse(localStorage.getItem("list")) : [];
+
+}
