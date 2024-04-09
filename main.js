@@ -37,6 +37,7 @@ const deleteItem = (e) => {
   list.removeChild(element); // list etiketi icerisinden article etiketini kaldirdik.
   displayAlert('Note deleted successfully', 'danger');
   setBackToDefault();
+  removeFromLocalStorage(id)
 };
 
 const editItem = (e) => {
@@ -159,12 +160,26 @@ const addToLocalStorage = (id,value) =>{
   const grocery = {id,value};
   let items= getLocalStorage()
   items.push(grocery)
-  console.log(items)
   localStorage.setItem("list",JSON.stringify(items))
 };
 
 // yerel depodan oge alma islemi
 const getLocalStorage = () =>{
   return localStorage.getItem("list") ? JSON.parse(localStorage.getItem("list")) : [];
+
+}
+
+// localstoragden veri silme
+const removeFromLocalStorage = (id) => {
+  // localstorageda bulununan verileri getir
+  let items = getLocalStorage()
+  // tikladigim etiketin idsi ile localstoragedeki id esit degilse bunu diziden cikar ve yeni bir elemana aktar.
+  items = items.filter((item) =>{ // filter denetlemeyi yapar yaptiktan sonra bu dizi icerisinden cikarir
+    if(item.id !== id){
+      return item
+    }
+  })
+  console.log(items)
+  localStorage.setItem("list",JSON.stringify(items))
 
 }
