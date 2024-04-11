@@ -47,8 +47,15 @@
   padding: 0;
   box-sizing: border-box;
 }
+html{
+  background: url("images/bg2.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  height: 100vh;
+}
 body {
-  background: var(--clr-grey-10);
+  padding-top: 100px ;
   color: var(--clr-grey-1);
   font-size: 14px;
   font-family: var(--ff-secondary);
