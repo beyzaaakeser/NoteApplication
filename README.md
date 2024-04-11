@@ -14,4 +14,4 @@ You can easily add, delete, and update your notes with a simple and useful note-
 
 <h4>IMAGE</h4>
 
-![](images/note-list.png)
+![](images/my-note-list.png)
